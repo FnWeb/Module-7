@@ -69,9 +69,10 @@
         android:layout_margin="4dp"
 
         android:layout_weight="1"
-        android:background="@drawable/roundcorners"
         android:backgroundTint="@color/black"
         android:fontFamily="@font/aa_batho"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
         android:lineSpacingExtra="-16sp"
         android:shape="rectangle"
         android:text="RUN CODE"
@@ -84,7 +85,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline7"
         app:layout_constraintStart_toStartOf="@+id/guideline6"
         app:layout_constraintTop_toTopOf="@+id/guideline2"
-        app:strokeColor="@color/white"
+        app:strokeColor="@color/orange"
         app:strokeWidth="1dp" />
 
     <androidx.constraintlayout.widget.Guideline
