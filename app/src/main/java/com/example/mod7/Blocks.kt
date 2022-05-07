@@ -6,6 +6,8 @@ package com.example.mod7
 //}
 
 class VariableCreationBlock(pos: Pair<Double, Double>){
+    var variableName = ""
+    var initExpr: Expr? = null
     init{
 
     }
