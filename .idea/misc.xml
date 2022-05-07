@@ -4,11 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Happy Piece/AndroidStudioProjects/Module-7/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2645" />
+        <entry key="..\:/Users/Happy Piece/AndroidStudioProjects/Module-7/app/src/main/res/drawable/ic_arrow_down_icon.xml" value="0.2855" />
         <entry key="..\:/Users/Happy Piece/AndroidStudioProjects/Module-7/app/src/main/res/drawable/ic_arrow_up_icon.xml" value="0.2855" />
         <entry key="..\:/Users/Happy Piece/AndroidStudioProjects/Module-7/app/src/main/res/drawable/ic_cross_icon.xml" value="0.2855" />
         <entry key="..\:/Users/Happy Piece/AndroidStudioProjects/Module-7/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2645" />
         <entry key="..\:/Users/Happy Piece/AndroidStudioProjects/Module-7/app/src/main/res/drawable/ic_plus_icon.xml" value="0.2645" />
-        <entry key="..\:/Users/Happy Piece/AndroidStudioProjects/Module-7/app/src/main/res/layout/activity_main.xml" value="0.75" />
+        <entry key="..\:/Users/Happy Piece/AndroidStudioProjects/Module-7/app/src/main/res/drawable/roundcorners.xml" value="0.2855" />
+        <entry key="..\:/Users/Happy Piece/AndroidStudioProjects/Module-7/app/src/main/res/layout/activity_main.xml" value="0.4585365853658537" />
         <entry key="..\:/Users/Happy Piece/AndroidStudioProjects/Module-7/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2855" />
       </map>
     </option>
