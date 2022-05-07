@@ -67,19 +67,24 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="4dp"
-        android:layout_weight="1"
 
+        android:layout_weight="1"
+        android:background="@drawable/roundcorners"
         android:backgroundTint="@color/black"
         android:fontFamily="@font/aa_batho"
+        android:lineSpacingExtra="-16sp"
         android:shape="rectangle"
         android:text="RUN CODE"
+        android:textAlignment="center"
         android:textSize="34sp"
+        android:visibility="visible"
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="2:1"
         app:layout_constraintEnd_toStartOf="@+id/guideline7"
         app:layout_constraintStart_toStartOf="@+id/guideline6"
         app:layout_constraintTop_toTopOf="@+id/guideline2"
-        app:strokeColor="@color/orange"
+        app:strokeColor="@color/white"
         app:strokeWidth="1dp" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -90,6 +95,7 @@
         app:layout_constraintGuide_percent="0.9" />
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -101,28 +107,108 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="#00FFFFFF"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline11"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam non rhoncus est. Pellentesque lobortis porta arcu, in venenatis libero dictum et. Nullam placerat eleifend risus quis sollicitudin. Aliquam quis aliquet odio. Nullam ultricies urna libero, non mattis massa dictum vel. Suspendisse facilisis ipsum eget sodales mattis. Pellentesque pulvinar sit amet velit a vestibulum. Maecenas tempus eros posuere bibendum lacinia. Phasellus quis quam at ex laoreet tincidunt ut quis velit. Donec viverra fermentum sodales. Etiam sodales mollis ipsum nec maximus.
-
-Aliquam a varius ex. Sed ligula dolor, congue id maximus ut, ornare et leo. Etiam pellentesque ex neque, tristique pellentesque libero finibus quis. Donec venenatis blandit felis a mattis. Vestibulum quis elit id sem maximus malesuada a et lacus. Sed ac nisl varius, maximus eros vel, dignissim nisl. In molestie nulla ac luctus faucibus. Nam massa felis, pellentesque ac risus ut, feugiat molestie nisl. Sed turpis felis, mattis a enim quis, vestibulum sodales leo. Nam porttitor tortor at lectus luctus pulvinar. Aliquam scelerisque lacus fringilla bibendum commodo. Curabitur vel massa sit amet felis cursus auctor. Morbi euismod nisl in ante aliquam posuere.
-
-Pellentesque nec ligula vel neque facilisis cursus. Mauris ultrices porta urna, non rutrum odio gravida nec. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vivamus a ipsum in nibh pulvinar semper pharetra sodales augue. Morbi porta vulputate augue id tincidunt. In hac habitasse platea dictumst. Curabitur tincidunt odio turpis, tincidunt tempor orci aliquet ut. Aliquam ac ante id ligula gravida ullamcorper in vitae augue. Etiam condimentum dolor purus, in congue dui vulputate vel.
-
-Ut eget enim sapien. Nunc malesuada vitae eros in imperdiet. Nam tristique imperdiet justo pharetra dictum. Vestibulum a tincidunt mi, nec sodales orci. Nullam ipsum mauris, imperdiet at condimentum vitae, scelerisque a purus. Nullam orci felis, placerat vitae pharetra et, consectetur quis dolor. Aliquam convallis, lacus condimentum pulvinar commodo, dolor erat ornare dolor, vitae porta arcu nunc non libero. Nunc finibus porta erat id faucibus. In pulvinar neque purus, vel pellentesque urna ultrices non. Proin blandit sit amet felis vel hendrerit. Nam faucibus lacinia magna. Aliquam quam felis, viverra et ipsum et, laoreet vestibulum enim. Proin non facilisis nulla. In et aliquam leo. Phasellus at arcu vulputate, ultrices lectus a, eleifend diam.
-
-Suspendisse potenti. Morbi dui mi, pretium eu metus id, rhoncus pretium nibh. Aliquam sit amet felis placerat leo scelerisque ultrices. Ut lacinia facilisis imperdiet. Etiam at mi sit amet orci maximus imperdiet. Pellentesque convallis aliquam ligula et elementum. Phasellus hendrerit lobortis venenatis. Phasellus orci velit, sodales vel orci nec, finibus vehicula lacus. Sed pulvinar et metus nec imperdiet. Vestibulum interdum eros pretium purus elementum commodo. Suspendisse rhoncus sapien id risus mollis semper. Nulla at turpis vel est malesuada pellentesque. Morbi scelerisque sit amet erat eu euismod. Vestibulum dignissim sem ac sem dignissim, vulputate scelerisque sapien semper. Nulla tempus nisi quis dolor ullamcorper aliquam. Curabitur faucibus nulla sem."
+                android:id="@+id/textView30"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/stroke"
+                android:text="3"
                 android:textAlignment="center"
-                android:textColor="@color/white" />
-        </LinearLayout>
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/textView31"
+                app:layout_constraintEnd_toStartOf="@+id/guideline11"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView31" />
+
+            <TextView
+                android:id="@+id/textView31"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/stroke"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer maximus dictum consectetur. Curabitur fermentum dui id ligula cursus, et dapibus nisl imperdiet."
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/guideline11"
+                app:layout_constraintTop_toBottomOf="@+id/textView25" />
+
+            <TextView
+                android:id="@+id/textView24"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/stroke"
+                android:text="2"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/textView25"
+                app:layout_constraintEnd_toStartOf="@+id/guideline11"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView25" />
+
+            <TextView
+                android:id="@+id/textView25"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/stroke"
+                android:text="Integer in cursus magna. Phasellus hendrerit, erat molestie molestie efficitur, elit arcu laoreet nunc, vel ornare velit ante lacinia erat. Donec porta interdum magna et feugiat. Phasellus pharetra porta libero, eget accumsan turpis varius et. Etiam at egestas sem, in blandit elit. Nam quis sagittis mi."
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/guideline11"
+                app:layout_constraintTop_toBottomOf="@+id/textView23" />
+
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/stroke"
+                android:text="1"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/textView23"
+                app:layout_constraintEnd_toStartOf="@+id/guideline11"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView23" />
+
+            <TextView
+                android:id="@+id/textView23"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/stroke"
+                android:text="Nunc condimentum orci id lacus sodales sagittis. Sed pretium cursus augue quis pretium. Morbi molestie turpis non imperdiet fringilla. Suspendisse at leo vel diam molestie feugiat."
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView22"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline11"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.1" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
     <androidx.constraintlayout.widget.Guideline
