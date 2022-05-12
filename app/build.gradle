@@ -5,7 +5,6 @@ plugins {
 
 android {
     compileSdk 32
-
     defaultConfig {
         applicationId "com.example.mod7"
         minSdk 21
@@ -15,7 +14,6 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -29,19 +27,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    dataBinding{
-        enabled = true
-    }
-    buildFeatures {
-        viewBinding = true
-    }
     buildFeatures{
-        viewBinding = true
-        dataBinding = true
-    }
-    buildFeatures{
-        viewBinding = true
-        dataBinding = true
+        viewBinding true
+        dataBinding true
     }
 }
 

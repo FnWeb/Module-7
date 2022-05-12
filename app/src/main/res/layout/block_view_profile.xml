@@ -12,7 +12,21 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
         android:text="blockTitleText"
+        android:textColor="@color/orange"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/blockContentPlaceholder"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:background="@drawable/stroke"
+        android:text="Integer in cursus magna. Phasellus hendrerit, erat molestie molestie efficitur, elit arcu laoreet nunc, vel ornare velit ante lacinia erat. Donec porta interdum magna et feugiat. Phasellus pharetra porta libero, eget accumsan turpis varius et. Etiam at egestas sem, in blandit elit. Nam quis sagittis mi."
+        android:textAlignment="center"
         android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

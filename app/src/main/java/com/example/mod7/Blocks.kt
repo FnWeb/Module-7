@@ -5,12 +5,10 @@ package com.example.mod7
 //    fun execute()
 //}
 
-class VariableCreationBlock(pos: Pair<Double, Double>){
+class VariableCreationBlock(pos: Pair<Double, Double>, initExpression: String = ""){
     var variableName = ""
-    var initExpr: Expr? = null
-    init{
-
-    }
+    var initExpr: String = initExpression
+    
 }
 
 class VariableAssignmentBlock(pos: Pair<Double, Double>){
