@@ -22,7 +22,7 @@
         android:scaleType="centerInside"
         android:src="@drawable/ic_arrow_up_icon"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
@@ -32,15 +32,15 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="4dp"
-        android:padding="10dp"
         android:layout_weight="1"
         android:adjustViewBounds="true"
         android:background="@drawable/roundcorners"
         android:backgroundTint="@color/orange"
+        android:padding="10dp"
         android:scaleType="centerInside"
         android:src="@drawable/ic_plus_icon"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
@@ -58,7 +58,7 @@
         android:scaleType="centerInside"
         android:src="@drawable/ic_arrow_down_icon"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
@@ -78,11 +78,11 @@
         android:shape="rectangle"
         android:text="RUN CODE"
         android:textAlignment="center"
-        android:textSize="34sp"
+        android:textSize="38sp"
         android:visibility="visible"
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="2:1"
+        app:layout_constraintDimensionRatio="h,2:1"
         app:layout_constraintEnd_toStartOf="@+id/guideline7"
         app:layout_constraintStart_toStartOf="@+id/guideline6"
         app:layout_constraintTop_toTopOf="@+id/guideline2"
@@ -94,7 +94,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.9" />
+        app:layout_constraintGuide_percent="0.88" />
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -115,14 +115,49 @@
             android:layout_height="wrap_content">
 
 
-            <Button
-                android:id="@+id/button"
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="#00FFFFFF"
+                android:layout_marginTop="4dp"
+                app:cardBackgroundColor="#00FFFFFF"
+                app:cardCornerRadius="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/blockGuideline"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeColor="@color/orange"
+                app:strokeWidth="1dp" />
+
+            <TextView
+                android:id="@+id/textView24"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/stroke"
+                android:backgroundTint="#00FFFFFF"
+                android:text="2"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView25"
+                app:layout_constraintEnd_toStartOf="@+id/blockGuideline"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView25"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/textView25"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/stroke"
+                android:text="Integer in cursus magna. Phasellus hendrerit, erat molestie molestie efficitur, elit arcu laoreet nunc, vel ornare velit ante lacinia erat. Donec porta interdum magna et feugiat. Phasellus pharetra porta libero, eget accumsan turpis varius et. Etiam at egestas sem, in blandit elit. Nam quis sagittis mi."
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/blockGuideline"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -130,9 +165,11 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@drawable/stroke"
+                android:backgroundTint="#00FFFFFF"
                 android:text="3"
                 android:textAlignment="center"
                 android:textColor="@color/white"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView31"
                 app:layout_constraintEnd_toStartOf="@+id/blockGuideline"
                 app:layout_constraintStart_toStartOf="parent"
@@ -147,37 +184,11 @@
                 android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer maximus dictum consectetur. Curabitur fermentum dui id ligula cursus, et dapibus nisl imperdiet."
                 android:textAlignment="center"
                 android:textColor="@color/white"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="@+id/blockGuideline"
                 app:layout_constraintTop_toBottomOf="@+id/textView25" />
-
-            <TextView
-                android:id="@+id/textView24"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@drawable/stroke"
-                android:text="2"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="@+id/textView25"
-                app:layout_constraintEnd_toStartOf="@+id/blockGuideline"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView25" />
-
-            <TextView
-                android:id="@+id/textView25"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/stroke"
-                android:text="Integer in cursus magna. Phasellus hendrerit, erat molestie molestie efficitur, elit arcu laoreet nunc, vel ornare velit ante lacinia erat. Donec porta interdum magna et feugiat. Phasellus pharetra porta libero, eget accumsan turpis varius et. Etiam at egestas sem, in blandit elit. Nam quis sagittis mi."
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="@+id/blockGuideline"
-                app:layout_constraintTop_toBottomOf="@+id/textView23" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/blockGuideline"

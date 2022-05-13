@@ -3,5 +3,8 @@
     <color name="orange">#FFf79816</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="grey">#DD434343</color>
+    <color name="yellow">#FFEB3B</color>
+    <color name="green">#4CAF50</color>
 
 </resources>
