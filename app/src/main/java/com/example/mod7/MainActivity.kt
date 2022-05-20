@@ -1,23 +1,12 @@
 package com.example.mod7
 
 import android.app.Activity
-import android.graphics.Color
-import android.hardware.input.InputManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.CalendarContract
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.view.inspector.PropertyReader
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
+import android.widget.*
 import androidx.core.content.ContextCompat
-import androidx.core.view.allViews
-import java.lang.Exception
 import com.example.mod7.databinding.ActivityMainBinding
 
 const val BLOCK_TYPE_VAR = "CREATE_VARIABLE"
@@ -55,6 +44,19 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun onVariableTypeClick(view: Spinner){
+        val variableTypeSpinner: Spinner = view
+        val adapter = ArrayAdapter.createFromResource(
+            this,
+            R.array.variableTypes,
+            R.layout.type_selection_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            variableTypeSpinner.adapter = adapter
+        }
+
+    }
+
     fun onVariableNameTextViewClick(view:View){
         view as TextView
         var name: String = view.text.toString()
@@ -69,7 +71,7 @@ class MainActivity : AppCompatActivity() {
     fun onBlockClicked(view: View){
         val id = view.id
         if(selectedBlock>=0){
-            program.blockViewManager.blocks[selectedBlock].first.findViewById<TextView>(R.id.blockTitle).setTextColor(ContextCompat.getColor(this, R.color.orange))
+            program.blockViewManager.blocks[selectedBlock].first.findViewById<TextView>(R.id.Title).setTextColor(ContextCompat.getColor(this, R.color.orange))
         }
         val selectionColor = ContextCompat.getColor(this, R.color.white)
         program.blockViewManager.blocks.apply {
@@ -77,7 +79,7 @@ class MainActivity : AppCompatActivity() {
 
             if(index>=0){
                 selectedBlock=index
-                this[index].first.findViewById<TextView>(R.id.blockTitle).setTextColor(selectionColor)
+                this[index].first.findViewById<TextView>(R.id.Title).setTextColor(selectionColor)
             } else{
                 selectedBlock=-1
                 program.exceptionHandler.throwCritical("Error retrieving selected block ID")

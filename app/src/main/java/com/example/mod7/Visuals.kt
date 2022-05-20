@@ -1,19 +1,15 @@
 package com.example.mod7
 
-import android.app.Application
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.content.withStyledAttributes
 import androidx.core.view.updateLayoutParams
 import com.example.mod7.databinding.ActivityMainBinding
 import com.example.mod7.databinding.BlockViewProfileBinding
@@ -27,7 +23,7 @@ class BlockCustomView @JvmOverloads constructor(
     var titleText = ""
     set(value){
         field = value
-        binding.blockTitle.text = value
+        binding.Title.text = value
     }
     private val binding = BlockViewProfileBinding.inflate(LayoutInflater.from(context))
     private var background: RectF = RectF()
@@ -38,13 +34,13 @@ class BlockCustomView @JvmOverloads constructor(
     }
     override fun onDraw(canvas: Canvas?) {
         throw Exception("WHERE DRAW")
-        canvas?.drawRect(background, binding.blockTitle.paint)
+        canvas?.drawRect(background, binding.Title.paint)
         super.onDraw(canvas)
     }
 
     init{
         background.set(0F,0F,100F,100F,)
-        binding.blockTitle.setBackgroundColor(Color.parseColor("#00FFFFFF"))
+        binding.Title.setBackgroundColor(Color.parseColor("#00FFFFFF"))
         // TODO: Заливка
     }
 
@@ -57,7 +53,7 @@ class BlockLineCustomView @JvmOverloads constructor(
     var titleText = ""
         set(value){
             field = value
-            binding.blockTitle.text = value
+            binding.Title.text = value
         }
     private val binding = BlockViewProfileBinding.inflate(LayoutInflater.from(context))
     override fun onDraw(canvas: Canvas?) {
@@ -74,7 +70,7 @@ class BlockLineCustomView @JvmOverloads constructor(
 
     init{
         background.set(0F,0F,100F,100F,)
-        binding.blockTitle.setBackgroundColor(Color.parseColor("#fdfdfd"))
+        binding.Title.setBackgroundColor(Color.parseColor("#fdfdfd"))
         // TODO: Заливка
     }
 
@@ -100,7 +96,7 @@ class BlockViewManager(binding: ActivityMainBinding){
             addView(block)
         }
         blockLine.findViewById<TextView>(R.id.lineNumberTextView).text = line.toString()
-        block.findViewById<TextView>(R.id.blockTitle).text = type.toString()
+        block.findViewById<TextView>(R.id.Title).text = type.toString()
         block.id = totalySafeIdCount++
         blockLine.updateLayoutParams<ConstraintLayout.LayoutParams> {
             bottomToBottom = block.id

@@ -6,4 +6,9 @@
     <string name="assignVariableDescription">Assigns a value to a previously declared variable</string>
     <string name="printVariableValue">Create variable</string>
     <string name="printVariableValueDescription">Prints values of specified variables</string>
+    <string-array name="variableTypes">
+        <item>Bool</item>
+        <item>Int</item>
+        <item>Double</item>
+    </string-array>
 </resources>
