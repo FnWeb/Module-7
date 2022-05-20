@@ -17,9 +17,7 @@ import androidx.core.content.withStyledAttributes
 import androidx.core.view.updateLayoutParams
 import com.example.mod7.databinding.ActivityMainBinding
 import com.example.mod7.databinding.BlockViewProfileBinding
-
-const val BLOCK_TYPE_VAR = "CREATE_VARIABLE"
-const val BLOCK_TYPE_ASSIGN = "ASSIGN_VARIABLE"
+import java.util.*
 
 class BlockCustomView @JvmOverloads constructor(
     context: Context,
@@ -82,17 +80,17 @@ class BlockLineCustomView @JvmOverloads constructor(
 
 }
 
-class BlockViewManager{
+class BlockViewManager(binding: ActivityMainBinding){
     var blocks = mutableListOf<Pair<View, View>>()
-    var totalySafeIdCount = 123456
-    fun addBlock(context: Context, layoutInflater: LayoutInflater, binding: ActivityMainBinding, parentBlock: Int, line: Int, type: String){//
+    private var totalySafeIdCount = 123456
+    private var binding = binding
+    fun addBlock(context: Context, layoutInflater: LayoutInflater, parentBlock: Int, line: Int, type: String){//
 //        val layoutInflater = LayoutInflater.from(context)
 //        val binding = ActivityMainBinding.inflate(layoutInflater)
         val blockLayout =  when(type){
-            BLOCK_TYPE_ASSIGN -> throw Exception("ASSIGN")
-            BLOCK_TYPE_VAR ->  {
-                R.layout.body_create_1_profile
-            }
+            BLOCK_TYPE_ASSIGN -> R.layout.body_assign_profile
+            BLOCK_TYPE_VAR ->  R.layout.body_create_1_profile
+            BLOCK_TYPE_PRINT -> R.layout.body_print_profile
             else -> throw Exception("UNKNOWN VISUAL BLOCK TYPE")
         }
         val block = layoutInflater.inflate(blockLayout, null)
@@ -129,6 +127,80 @@ class BlockViewManager{
 
         blocks.add(Pair<View, View>(block, blockLine))
 //        block.visibility = View.INVISIBLE
+    }
+
+    fun swapBlocks(first: Int, second: Int){
+
+        val firstHeight = blocks[first].first.height
+        val secondHeight = blocks[second].first.height
+
+
+        if(kotlin.math.abs(first-second)==1){
+            if(first<blocks.size-1){
+                blocks[first+1].first.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                    topToBottom = ConstraintLayout.LayoutParams.UNSET
+                    topToTop = ConstraintLayout.LayoutParams.UNSET
+                    if(first>=1) topToBottom = blocks[first-1].first.id else topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+                }
+            }
+            if(second<blocks.size-1){
+                blocks[second+1].first.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                    topToBottom = ConstraintLayout.LayoutParams.UNSET
+                    topToTop = ConstraintLayout.LayoutParams.UNSET
+                    if(second>=1) topToBottom = blocks[second-1].first.id else topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+                }
+            }
+//            blocks[1].first.updateLayoutParams<ConstraintLayout.LayoutParams> {
+//                topToBottom = ConstraintLayout.LayoutParams.UNSET
+//                topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+//            }
+            blocks[kotlin.math.min(first,second)].first.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                topToTop = ConstraintLayout.LayoutParams.UNSET
+                topToBottom = blocks[kotlin.math.max(first, second)].first.id
+            }
+            Collections.swap(blocks, first, second)
+            return
+        }
+        blocks[first].second.apply{
+            updateLayoutParams<ConstraintLayout.LayoutParams> {
+                height = secondHeight
+            }
+        }
+
+        blocks[first].first.apply {
+            updateLayoutParams<ConstraintLayout.LayoutParams> {
+                if (blocks.size <= 0) {
+                    topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+                } else topToBottom =
+                    if (second < 1) blocks.last().first.id else blocks[second-1].first.id
+            }
+        }
+
+        blocks[second].second.apply{
+            updateLayoutParams<ConstraintLayout.LayoutParams> {
+                height = firstHeight
+            }
+        }
+
+        blocks[second].first.apply {
+            updateLayoutParams<ConstraintLayout.LayoutParams> {
+                if (blocks.size <= 0) {
+                    topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+                } else topToBottom =
+                    if (first < 1) blocks.last().first.id else blocks[first-1].first.id
+            }
+        }
+        if(first<blocks.size-1){
+            blocks[first+1].first.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                topToBottom = blocks[second].first.id
+            }
+        }
+        if(second<blocks.size-1){
+            blocks[second+1].first.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                topToBottom = blocks[first].first.id
+            }
+        }
+        Collections.swap(blocks, first, second)
     }
 
 }

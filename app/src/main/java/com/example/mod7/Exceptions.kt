@@ -5,11 +5,15 @@ import android.content.Intent
 import android.view.View
 import androidx.core.content.ContextCompat.startActivity
 import com.example.mod7.Error
+import com.example.mod7.databinding.ActivityMainBinding
 
 const val EXC_MSG = "EXCEPTION_MSG"
 
-class ExceptionHandler {
-    fun throwRuntime(msg: String, context: Context){
+class ExceptionHandler(program: Program, binding: ActivityMainBinding) {
+    private val program = program
+    private val binding: ActivityMainBinding = binding
+    fun throwRuntime(msg: String, context: Context = binding.rootLayout.context){
+        program.stopExecution()
         val intent: Intent = Intent(context, Error::class.java)
         intent.putExtra(EXC_MSG, msg);
         context.startActivity(intent)

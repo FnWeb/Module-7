@@ -18,7 +18,7 @@ class Error : AppCompatActivity() {
             binding.msgTextView.text = extras.getString("EXCEPTION_MSG")
         }
         binding.errorBackButton.setOnClickListener {
-            
+            super.finish()
         }
     }
 }

@@ -55,4 +55,5 @@
         android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/contentTextView"
         app:layout_constraintTop_toTopOf="@+id/contentTextView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
