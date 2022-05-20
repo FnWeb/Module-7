@@ -23,10 +23,12 @@ interface Variable : Expr{
     //    open fun retrieve(): Any
     open fun set(to: Any)
     open operator fun invoke(): Any //Retrieve atomic value
+    var initialized:Boolean
 }
 
 class IntegerType(init : Any) : Variable{
     private var value: Int = 0;
+    override var initialized = false
     init{
         set(init)
     }
@@ -38,7 +40,7 @@ class IntegerType(init : Any) : Variable{
     override fun set(to: Any) {
         value = when(to){
             is Int -> to
-            is String -> TODO("Requires string parser")
+            is String -> to.toInt()
             is Double -> kotlin.math.round(to).toInt()
             is IntegerType -> to.value
             else -> throw Exception("Variable type mismatch: $to can not be converted to Int")
@@ -64,6 +66,7 @@ class IntegerType(init : Any) : Variable{
 
 class DoubleType(init : Any) : Variable{
     private var value: Double = 0.0;
+    override var initialized = false
     init{
         set(init)
     }
@@ -75,7 +78,7 @@ class DoubleType(init : Any) : Variable{
     override fun set(to: Any) {
         value = when(to){
             is Int -> to.toDouble()
-            is String -> TODO("Requires string parser")
+            is String -> to.toDouble()
             is Double -> to
             is IntegerType -> to().toDouble()
             else -> throw Exception("Variable type mismatch: $to can not be converted to Int")
@@ -101,6 +104,7 @@ class DoubleType(init : Any) : Variable{
 
 class BoolType(init : Any) : Variable{
     private var value: Boolean = false;
+    override var initialized = false
     init{
         set(init)
     }
@@ -112,7 +116,7 @@ class BoolType(init : Any) : Variable{
     override fun set(to: Any) {
         value = when(to){
             is Int -> to>0
-            is String -> to!=""
+            is String -> to!="" && to!="0" && to!="false"
             is Double -> to>0
             else -> throw Exception("Variable type mismatch: $to can not be used to initialize a Boolean")
         }

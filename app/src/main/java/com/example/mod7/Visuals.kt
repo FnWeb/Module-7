@@ -1,80 +1,28 @@
 package com.example.mod7
 
+import android.app.Application
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.util.Log
+import android.view.ContextMenu
 import android.view.LayoutInflater
+import android.view.MenuInflater
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.withStyledAttributes
 import androidx.core.view.updateLayoutParams
 import com.example.mod7.databinding.ActivityMainBinding
 import com.example.mod7.databinding.BlockViewProfileBinding
 import java.util.*
-
-class BlockCustomView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0,
-): ConstraintLayout(context, attrs, defStyleAttr){
-    var titleText = ""
-    set(value){
-        field = value
-        binding.Title.text = value
-    }
-    private val binding = BlockViewProfileBinding.inflate(LayoutInflater.from(context))
-    private var background: RectF = RectF()
-    var nestingLevel: Int = 0
-    set(value){
-        field = value
-        /// TODO: Масштабирование блоков с изменением урованя вложенности
-    }
-    override fun onDraw(canvas: Canvas?) {
-        throw Exception("WHERE DRAW")
-        canvas?.drawRect(background, binding.Title.paint)
-        super.onDraw(canvas)
-    }
-
-    init{
-        background.set(0F,0F,100F,100F,)
-        binding.Title.setBackgroundColor(Color.parseColor("#00FFFFFF"))
-        // TODO: Заливка
-    }
-
-}
-class BlockLineCustomView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0,
-): ConstraintLayout(context, attrs, defStyleAttr){
-    var titleText = ""
-        set(value){
-            field = value
-            binding.Title.text = value
-        }
-    private val binding = BlockViewProfileBinding.inflate(LayoutInflater.from(context))
-    override fun onDraw(canvas: Canvas?) {
-        canvas?.drawRect(background, Paint(8290687))
-        throw Exception("WHERE DRAW")
-        super.onDraw(canvas)
-    }
-    var nestingLevel: Int = 0
-        set(value){
-            field = value
-            /// TODO: Масштабирование блоков с изменением урованя вложенности
-        }
-    private var background: RectF = RectF()
-
-    init{
-        background.set(0F,0F,100F,100F,)
-        binding.Title.setBackgroundColor(Color.parseColor("#fdfdfd"))
-        // TODO: Заливка
-    }
-
-}
 
 class BlockViewManager(binding: ActivityMainBinding){
     var blocks = mutableListOf<Pair<View, View>>()
@@ -95,8 +43,10 @@ class BlockViewManager(binding: ActivityMainBinding){
             addView(blockLine)
             addView(block)
         }
+        when(type) {
+            BLOCK_TYPE_VAR -> blockCreateInit(block)
+        }
         blockLine.findViewById<TextView>(R.id.lineNumberTextView).text = line.toString()
-        block.findViewById<TextView>(R.id.Title).text = type.toString()
         block.id = totalySafeIdCount++
         blockLine.updateLayoutParams<ConstraintLayout.LayoutParams> {
             bottomToBottom = block.id
@@ -199,4 +149,23 @@ class BlockViewManager(binding: ActivityMainBinding){
         Collections.swap(blocks, first, second)
     }
 
+    private fun blockCreateInit(block: View){
+        val spinner = block.findViewById<Spinner>(R.id.spinner)
+        ArrayAdapter.createFromResource(
+            block.context,
+            R.array.variableTypes,
+            R.layout.type_selection_spinner_item
+        ).also {
+            it.setDropDownViewResource(R.layout.type_selection_spinner_item)
+            spinner.adapter = it
+        }
+        spinner.setPopupBackgroundResource(R.drawable.rectangle)
+        block.findViewById<TextView>(R.id.blockTitle).text = block.context.resources.getString(R.string.createVariable)
+        block.findViewById<TextView>(R.id.blockAnnotation).text = block.context.resources.getString(R.string.createVariableAnnotation).toString()
+    }
+
+    fun clearBlocks(){
+        blocks.forEach { binding.blockConstraintLayout.removeView(it.first); binding.blockConstraintLayout.removeView(it.second) }
+        blocks.clear()
+    }
 }

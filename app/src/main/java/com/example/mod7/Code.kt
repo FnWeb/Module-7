@@ -5,8 +5,13 @@ import android.app.Application
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.EditText
+import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.example.mod7.databinding.ActivityMainBinding
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.selects.select
@@ -19,14 +24,11 @@ import kotlin.concurrent.timerTask
 const val typeNameBool = "Bool"; const val typeNameInteger = "Int"; const val typeNameDouble = "Double"
 
 class Program (binding: ActivityMainBinding) {
-    val uninitializedBool: BoolType? = null;
-    val uninitializedInteger: IntegerType? = null;
-    val uninitializedDouble: DoubleType? = null
     private var timer:Timer = Timer()
     val exceptionHandler = ExceptionHandler(this, binding)
     val blockViewManager = BlockViewManager(binding)
     private var isRunning = false
-    private var variables: MutableMap<String, Variable?> = mutableMapOf()
+    private var variables: MutableMap<String, Variable> = mutableMapOf()
     private var binding: ActivityMainBinding = binding
     private var iterationCounter = 0
     private var consoleOutput = ""
@@ -70,33 +72,16 @@ class Program (binding: ActivityMainBinding) {
             throw Exception("Attempting to create existing variable $variable")
         }
         variables[variable] = when (type) {
-            typeNameInteger -> uninitializedInteger
-            typeNameBool -> uninitializedBool
-            typeNameDouble -> uninitializedDouble
+            typeNameInteger -> IntegerType(0)
+            typeNameBool -> BoolType(0)
+            typeNameDouble -> DoubleType(0)
             else -> throw Exception("Unable to create variable: unknown type $type")
         }
     }
 
-    public fun setValue(variable: String, value: Any): Variable {
-        if (variables.containsKey(variable)) {
-            throw Exception("Unable to set variable $variable - doesn't exist")
-        }
-        if (variables[variable] != null) {
-            variables[variable]?.set(value)
-            return variables[variable]
-                ?: throw Exception("Error assigning $variable (is ${variables[variable]}) to $value")
-        }
-
-        variables[variable] = when (variables[variable]) {
-            is IntegerType -> IntegerType(value)
-            is BoolType -> BoolType(value)
-            is DoubleType -> DoubleType(value)
-            else -> throw Exception("Unable to assign $variable - unknown type")
-        }
-        return variables[variable]
-            ?: throw Exception("Error assigning $variable (is ${variables[variable]}) to $value")
+    fun isProgramRunning(): Boolean{
+        return isRunning
     }
-
 
     private var instructions: LinkedList<String> = LinkedList<String>()
     fun appendInstruction(
@@ -105,16 +90,10 @@ class Program (binding: ActivityMainBinding) {
         parentBlock: Int,
         type: String
     ) {
-        when (type) {
-//            BLOCK_TYPE_VAR ->
-//            BLOCK_TYPE_ASSIGN ->
-//            BLOCK_TYPE_PRINT ->
-//            else -> exceptionHandler.throwCritical("Unknown block type $type")
-        }
         if (!(type in listOf(BLOCK_TYPE_ASSIGN, BLOCK_TYPE_VAR, BLOCK_TYPE_PRINT))) {
             exceptionHandler.throwCritical("Unknown block type $type")
         }
-        instructions.push(type)
+        instructions.add(type)
         blockViewManager.addBlock(context, layoutInflater, parentBlock, instructions.size, type)
     }
 
@@ -154,6 +133,7 @@ class Program (binding: ActivityMainBinding) {
     }
 
     fun startExecution() {
+        Log.w("w", instructions.joinToString (" "))
         if (isRunning) {
             return
         }
@@ -168,6 +148,16 @@ class Program (binding: ActivityMainBinding) {
             timerTask {
                 if (iterationCounter < instructions.size) {
                     runInstructionSet()
+//                    if(iterationCounter>0){
+//                        blockViewManager.blocks[iterationCounter-1].first.apply {
+//                            findViewById<TextView>(R.id.blockTitle).setTextColor(ContextCompat.getColor(context, R.color.white))
+//                            findViewById<View>(R.id.bodyRectangleView).background = ResourcesCompat.getDrawable(resources, R.drawable.roundcorners_selected, null)
+//                        }
+//                    }
+//                    blockViewManager.blocks[iterationCounter].first.apply {
+//                        findViewById<TextView>(R.id.blockTitle).setTextColor(ContextCompat.getColor(context, R.color.orange))
+//                        findViewById<View>(R.id.bodyRectangleView).background = ResourcesCompat.getDrawable(resources, R.drawable.roundcorners, null)
+//                    }
                 } else {
                     stopExecution()
                     consoleOutput+="---------------------------------------\n"
@@ -187,7 +177,20 @@ class Program (binding: ActivityMainBinding) {
                         .split(
                             variableNameRegex, ","
                         ) as List<String>
-                contents.forEach { createVariable(it, typeNameInteger); }
+                contents.forEach {
+                    blockViewManager.blocks[iterationCounter].first.findViewById<Spinner>(R.id.spinner).selectedItem.apply {
+                        if(it.length<=0){
+                            exceptionHandler.throwRuntime("Error creating variable: Bad name")
+                        }
+                        if (equals("Integer")) {
+                            createVariable(it, typeNameInteger)
+                        } else if(equals("Bool")){
+                            createVariable(it, typeNameBool)
+                        }else if(equals("Double")){
+                            createVariable(it, typeNameDouble)
+                        }
+                    }
+                }
                 printToConsole(
                     "Variable${if (contents.size > 1) "s" else ""} [${
                         contents.joinToString(
@@ -196,10 +199,41 @@ class Program (binding: ActivityMainBinding) {
                     }] created"
                 )
             }
+            BLOCK_TYPE_ASSIGN -> {
+                val variableName = blockViewManager.blocks[iterationCounter].first.findViewById<EditText>(R.id.variableNameTextView).text.toString()
+                val input = blockViewManager.blocks[iterationCounter].first.findViewById<EditText>(R.id.expressionField).text.toString()
+                val value = parseRPN(
+                    if(input.isNotEmpty() && input[0]=='-'){
+                        "0$input"
+                    }else
+                        input
+                    )
+                if(variables[variableName] is IntegerType) {
+                    variables[variableName] = IntegerType(value)
+                } else if(variables[variableName] is BoolType) {
+                    variables[variableName] = BoolType(value)
+                } else if(variables[variableName] is DoubleType) {
+                    variables[variableName] = DoubleType(value)
+                }
+                variables[variableName]?.initialized = true
+                printToConsole("", "Variable $variableName is assigned ${variables[variableName]?.invoke().toString()}")
+
+
+            }
+            BLOCK_TYPE_PRINT -> {
+                blockViewManager.blocks[iterationCounter].first.apply {
+                    printToConsole("", parseRPN(findViewById<EditText>(R.id.expressionField).text.toString()))
+                }
+            }
         }
         iterationCounter++
     }
 
+    fun clearInstructions(){
+        stopExecution()
+        instructions.clear()
+        blockViewManager.clearBlocks()
+    }
 
     fun precedence(operator: Char): Int {
         return when (operator) {
@@ -212,7 +246,7 @@ class Program (binding: ActivityMainBinding) {
         }
     }
 
-    fun parseToRPN(input: String): String {
+    fun parseRPN(input: String): String {
         var index = 0
         val numberRegex = "-?[0-9]+(\\\\.[0-9]+)?".toRegex()
         val operatorRegex = "[%/*+-]".toRegex()
@@ -227,9 +261,16 @@ class Program (binding: ActivityMainBinding) {
                     token += input[++index]
                 }
                 output.add(token)
-            } else if (false)//todo TOKEN IS A FUNCTION
+            } else if (token.matches("[a-zA-Z]".toRegex()))
             {
-//                operators.push(token[0])
+                while (index + 1 < input.length && (token + input[index + 1]).matches(
+                        variableNameRegex.toRegex())) {
+                    token += input[++index]
+                }
+                if(!variables.containsKey(token) || !(variables[token]?.initialized?:throw Exception("Variable $token doesn't exist"))){
+                    exceptionHandler.throwRuntime("Variable $token is uninitialized or does not exist")
+                }
+                output.add(if(token == "true" || token == "false") (token == "true").toString() else variables[token]?.invoke().toString())
             } else if (token.matches(operatorRegex)) {
                 while (operators.isNotEmpty() && precedence(operators.peek()) <= precedence(token[0]) /*||token is left-associative && equal precedence*/) {
                     output.add(operators.pop().toString())
@@ -258,7 +299,58 @@ class Program (binding: ActivityMainBinding) {
             output.add(operators.pop().toString())
         }
 
-        return output.joinToString(separator = " ")//todo Возможно можно будет парсить уже и output, не переводя в строку, но пока так
+        var operands: Stack<String> = Stack()
+        var right: String = ""
+        var left: String = ""
+        var result: String = ""
+        while(output.isNotEmpty()){
+            token = output.remove()
+            if(token.matches(operatorRegex)){
+                right = operands.pop()
+                left = operands.pop()
+                if(token == "%" && (right.indexOf(".")>=0 || left.indexOf(".")>=0)){
+                    exceptionHandler.throwRuntime("Unable to calculate floating point number mod")
+                }
+                result = when(token){
+                    "+" -> {
+                        if(right.indexOf(".")>=0 || left.indexOf(".")>=0){
+                            (left.toDouble()+right.toDouble()).toString()
+                        }else{
+                            (left.toInt()+right.toInt()).toString()
+                        }
+                    }
+                    "-" -> {
+                        if(right.indexOf(".")>=0 || left.indexOf(".")>=0){
+                            (left.toDouble()-right.toDouble()).toString()
+                        }else{
+                            (left.toInt()-right.toInt()).toString()
+                        }
+                    }
+                    "*" -> {
+                        if(right.indexOf(".")>=0 || left.indexOf(".")>=0){
+                            (left.toDouble()*right.toDouble()).toString()
+                        }else{
+                            (left.toInt()*right.toInt()).toString()
+                        }
+                    }
+                    "/" -> {
+                        if(right.indexOf(".")>=0 || left.indexOf(".")>=0 || left.toInt()%right.toInt()>0){
+                            (left.toDouble()/right.toDouble()).toString()
+                        }else{
+                            (left.toInt()/right.toInt()).toString()
+                        }
+                    }
+                    "%" -> {
+                            (left.toInt()%right.toInt()).toString()
+                    }
+                    else-> throw Exception("Operator parsing error")
+                }
+                operands.push(result)
+            }else{
+                operands.push(token)
+            }
+        }
+        return operands.first()
     }
 
 }

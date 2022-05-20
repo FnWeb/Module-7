@@ -4,11 +4,12 @@
     <string name="createVariableDescription">Creates a variable with specified name</string>
     <string name="assignVariable">Assign value variable</string>
     <string name="assignVariableDescription">Assigns a value to a previously declared variable</string>
-    <string name="printVariableValue">Create variable</string>
+    <string name="printVariableValue">Print variable</string>
     <string name="printVariableValueDescription">Prints values of specified variables</string>
+    <string name="createVariableAnnotation">Of type: </string>
     <string-array name="variableTypes">
         <item>Bool</item>
-        <item>Int</item>
+        <item>Integer</item>
         <item>Double</item>
     </string-array>
 </resources>
