@@ -1,21 +1,14 @@
 package com.example.mod7
 
-import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.CalendarContract
-import android.util.Log
+import android.view.Gravity
 import android.view.View
-import android.view.inspector.PropertyReader
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
+import android.view.View.OnTouchListener
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.allViews
-import java.lang.Exception
 import com.example.mod7.databinding.ActivityMainBinding
+
 
 const val variableNameRegex = "[a-zA-Z]+(\\d|[a-zA-Z])*"
 var selectedBlock = -1
@@ -29,12 +22,27 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.rootLayout)
 
-        binding.imageButton4.setOnClickListener {
-            program.blockViewManager.addBlock(this, layoutInflater, binding, -1, ++count, "CREATE_VARIABLE")
+        binding.plusButton.setOnClickListener {
+            val view = layoutInflater.inflate(R.layout.block_type_selection_window, null)
+            val window = PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true)
+            view.findViewById<View>(R.id.crossButton).setOnTouchListener(OnTouchListener { v, event ->
+                window.dismiss()
+                true
+            })
+            window.showAtLocation(binding.scrollView2, Gravity.CENTER, 0, 0);
+            view.findViewById<View>(R.id.createVariable).setOnClickListener {
+                program.blockViewManager.addBlock(this, layoutInflater, binding, -1, ++count, "CREATE_VARIABLE")
+            }
+            view.findViewById<View>(R.id.assignVariable).setOnClickListener {
+                program.blockViewManager.addBlock(this, layoutInflater, binding, -1, ++count, "CREATE_VARIABLE")
+            }
+            view.findViewById<View>(R.id.printVariable).setOnClickListener {
+                program.blockViewManager.addBlock(this, layoutInflater, binding, -1, ++count, "CREATE_VARIABLE")
+            }
 //            val block = BlockCustomView(this)
 //            binding.rootLayout.addView(block)
         }
-        binding.imageButton8.setOnClickListener{
+        binding.upArrowButton.setOnClickListener{
             program.exceptionHandler.throwRuntime("Ойшбибка (это ты) $count",this)
         }
 

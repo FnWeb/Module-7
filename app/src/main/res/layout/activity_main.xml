@@ -10,7 +10,7 @@
     tools:context=".MainActivity">
 
     <ImageButton
-        android:id="@+id/imageButton8"
+        android:id="@+id/upArrowButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="4dp"
@@ -28,7 +28,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
     <ImageButton
-        android:id="@+id/imageButton4"
+        android:id="@+id/plusButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="4dp"
@@ -46,7 +46,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
     <ImageButton
-        android:id="@+id/imageButton5"
+        android:id="@+id/downArrowButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="4dp"
@@ -64,7 +64,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
     <Button
-        android:id="@+id/button8"
+        android:id="@+id/runCodeButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="4dp"
@@ -94,7 +94,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.9" />
+        app:layout_constraintGuide_percent="0.87" />
 
     <ScrollView
         android:id="@+id/scrollView2"
