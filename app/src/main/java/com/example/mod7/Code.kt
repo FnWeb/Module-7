@@ -1,13 +1,18 @@
 package com.example.mod7
 
 import android.util.AttributeSet
+import kotlinx.coroutines.currentCoroutineContext
 import java.util.*
 import kotlin.Exception
 
 class Program{
     val uninitializedBool: BoolType? = null; val uninitializedInteger: IntegerType? = null; val uninitializedDouble: DoubleType? = null
     val typeNameBool = "Bool"; val typeNameInteger = "Int"; val typeNameDouble = "Double"
+    val exceptionHandler = ExceptionHandler()
+    val blockViewManager = BlockViewManager()
+    private var isRunning = false
     private var variables: MutableMap<String, Variable?> = mutableMapOf()
+
     public fun getVariableMap(): Map<String, Variable?>{
         return variables.toMap() //readonly
     }
@@ -64,9 +69,10 @@ class Program{
 
     private var instructions: LinkedList<Expr> = LinkedList<Expr>()
     fun appendInstruction(type: String){
+        exceptionHandler.throwCritical("no")
         when(type){
-            "VarCreate"-> //
-            "VarAssign"
+//            "VarCreate"-> blockViewManager.addBlock(aAAAAAAAAAAAAAA, instructions.size-1, instructions.size, BLOCK_TYPE_VAR)
+//            "VarAssign" -> blockViewManager.addBlock(aAAAAAAAAAAAAAA, instructions.size-1, instructions.size, BLOCK_TYPE_ASSIGN)
         }
     }
     fun moveInstructionUp(index: Int){
@@ -77,6 +83,12 @@ class Program{
     fun moveInstructionDown(){
 
     }
+
+    fun stopExecution(){
+        isRunning = false;
+    }
+
+
 }
 
 

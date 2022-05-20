@@ -125,60 +125,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/textView30"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@drawable/stroke"
-                android:text="3"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="@+id/textView31"
-                app:layout_constraintEnd_toStartOf="@+id/blockGuideline"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView31" />
-
-            <TextView
-                android:id="@+id/textView31"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/stroke"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer maximus dictum consectetur. Curabitur fermentum dui id ligula cursus, et dapibus nisl imperdiet."
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="@+id/blockGuideline"
-                app:layout_constraintTop_toBottomOf="@+id/textView25" />
-
-            <TextView
-                android:id="@+id/textView24"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@drawable/stroke"
-                android:text="2"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="@+id/textView25"
-                app:layout_constraintEnd_toStartOf="@+id/blockGuideline"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView25" />
-
-            <TextView
-                android:id="@+id/textView25"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/stroke"
-                android:text="Integer in cursus magna. Phasellus hendrerit, erat molestie molestie efficitur, elit arcu laoreet nunc, vel ornare velit ante lacinia erat. Donec porta interdum magna et feugiat. Phasellus pharetra porta libero, eget accumsan turpis varius et. Etiam at egestas sem, in blandit elit. Nam quis sagittis mi."
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="@+id/blockGuideline"
-                app:layout_constraintTop_toBottomOf="@+id/textView23" />
-
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/blockGuideline"
                 android:layout_width="wrap_content"
