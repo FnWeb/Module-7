@@ -68,8 +68,8 @@ class Program (binding: ActivityMainBinding) {
     }
 
     public fun createVariable(variable: String, type: String) {
-        if (variables.containsKey(variable)) {
-            throw Exception("Attempting to create existing variable $variable")
+        if (variables.containsKey(variable) || variable.length<=0) {
+            throw Exception("Attempting to create existing variable [$variable]")
         }
         variables[variable] = when (type) {
             typeNameInteger -> IntegerType(0)
@@ -122,8 +122,11 @@ class Program (binding: ActivityMainBinding) {
     }
 
     fun printToConsole(tag: String = "", msg: String = "\n") {
-        Log.d("", "$tag$msg")
         consoleOutput += "$tag$msg\n"
+    }
+
+    fun getCurrentLine(): Int{
+        return iterationCounter
     }
 
     fun stopExecution() {
@@ -133,7 +136,6 @@ class Program (binding: ActivityMainBinding) {
     }
 
     fun startExecution() {
-        Log.w("w", instructions.joinToString (" "))
         if (isRunning) {
             return
         }
@@ -161,11 +163,11 @@ class Program (binding: ActivityMainBinding) {
                 } else {
                     stopExecution()
                     consoleOutput+="---------------------------------------\n"
-                    exceptionHandler.throwRuntime(consoleOutput)
+                    exceptionHandler.throwRuntime(consoleOutput, showLine = false)
                 }
                       },
-            250,
-            750
+            0,
+            (1000/(kotlin.math.min(kotlin.math.max(programSpeed,1), 10)*100)).toLong()
         )
     }
 
@@ -233,6 +235,11 @@ class Program (binding: ActivityMainBinding) {
         stopExecution()
         instructions.clear()
         blockViewManager.clearBlocks()
+        consoleOutput = ""
+    }
+
+    fun clearConsoleOutput(){
+        consoleOutput = ""
     }
 
     fun precedence(operator: Char): Int {
@@ -248,7 +255,7 @@ class Program (binding: ActivityMainBinding) {
 
     fun parseRPN(input: String): String {
         var index = 0
-        val numberRegex = "-?[0-9]+(\\\\.[0-9]+)?".toRegex()
+        val numberRegex = "-?[0-9]+(\\.[0-9]+)?".toRegex()
         val operatorRegex = "[%/*+-]".toRegex()
         var token: String
         var output: Queue<String> = LinkedList<String>()// Kotlin moment
@@ -257,7 +264,7 @@ class Program (binding: ActivityMainBinding) {
             // Но штраф за неиспользование for in нам все равно впаяют))0)
             token = "" + input[index]
             if (token.matches(numberRegex)) {
-                while (index + 1 < input.length && (token + input[index + 1]).matches(numberRegex)) {
+                while (index + 1 < input.length && ((token + input[index + 1]).matches(numberRegex) || index + 2 < input.length &&  input[index + 1] == '.' && (token + input[index + 1] + input[index+2]).matches(numberRegex))) {
                     token += input[++index]
                 }
                 output.add(token)
@@ -267,10 +274,10 @@ class Program (binding: ActivityMainBinding) {
                         variableNameRegex.toRegex())) {
                     token += input[++index]
                 }
-                if(!variables.containsKey(token) || !(variables[token]?.initialized?:throw Exception("Variable $token doesn't exist"))){
+                output.add(if(token == "true" || token == "false") (token == "true").toString() else variables[token]?.invoke().toString())
+                if(token != "true" && token!="false" && (!variables.containsKey(token) || !(variables[token]?.initialized?:throw Exception("Variable $token doesn't exist")))){
                     exceptionHandler.throwRuntime("Variable $token is uninitialized or does not exist")
                 }
-                output.add(if(token == "true" || token == "false") (token == "true").toString() else variables[token]?.invoke().toString())
             } else if (token.matches(operatorRegex)) {
                 while (operators.isNotEmpty() && precedence(operators.peek()) <= precedence(token[0]) /*||token is left-associative && equal precedence*/) {
                     output.add(operators.pop().toString())
@@ -311,37 +318,39 @@ class Program (binding: ActivityMainBinding) {
                 if(token == "%" && (right.indexOf(".")>=0 || left.indexOf(".")>=0)){
                     exceptionHandler.throwRuntime("Unable to calculate floating point number mod")
                 }
+                Log.wtf("wtf", "$left $token $right")
                 result = when(token){
                     "+" -> {
                         if(right.indexOf(".")>=0 || left.indexOf(".")>=0){
-                            (left.toDouble()+right.toDouble()).toString()
+//                            (left.toDouble()+right.toDouble()).toString()
+                            (DoubleType(left)+DoubleType(right)).invoke().toString()
                         }else{
-                            (left.toInt()+right.toInt()).toString()
+                            (IntegerType(left)+IntegerType(right)).invoke().toString()
                         }
                     }
                     "-" -> {
                         if(right.indexOf(".")>=0 || left.indexOf(".")>=0){
-                            (left.toDouble()-right.toDouble()).toString()
+                            (DoubleType(left)-DoubleType(right)).invoke().toString()
                         }else{
-                            (left.toInt()-right.toInt()).toString()
+                            (IntegerType(left)-IntegerType(right)).invoke().toString()
                         }
                     }
                     "*" -> {
                         if(right.indexOf(".")>=0 || left.indexOf(".")>=0){
-                            (left.toDouble()*right.toDouble()).toString()
+                            (DoubleType(left)*DoubleType(right)).invoke().toString()
                         }else{
-                            (left.toInt()*right.toInt()).toString()
+                            (IntegerType(left)*IntegerType(right)).invoke().toString()
                         }
                     }
                     "/" -> {
                         if(right.indexOf(".")>=0 || left.indexOf(".")>=0 || left.toInt()%right.toInt()>0){
-                            (left.toDouble()/right.toDouble()).toString()
+                            (DoubleType(left)/DoubleType(right)).invoke().toString()
                         }else{
-                            (left.toInt()/right.toInt()).toString()
+                            (IntegerType(left)/IntegerType(right)).invoke().toString()
                         }
                     }
                     "%" -> {
-                            (left.toInt()%right.toInt()).toString()
+                        (IntegerType(left)%IntegerType(right)).invoke().toString()
                     }
                     else-> throw Exception("Operator parsing error")
                 }

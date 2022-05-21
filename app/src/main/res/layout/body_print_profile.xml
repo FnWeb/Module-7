@@ -40,7 +40,7 @@
         android:layout_marginBottom="4dp"
         android:ems="10"
         android:gravity="center_vertical"
-        android:hint="Value"
+        android:hint="@string/expressionFieldHint"
         android:inputType="textPersonName"
         android:onClick="onExpressionFieldClick"
         android:scrollbarSize="0dp"

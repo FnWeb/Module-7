@@ -7,6 +7,9 @@
     <string name="printVariableValue">Print variable</string>
     <string name="printVariableValueDescription">Prints values of specified variables</string>
     <string name="createVariableAnnotation">Of type: </string>
+    <string name="expressionFieldHint">Value</string>
+    <string name="variableFieldHint">Name</string>
+    <string name="runButtonText">RUN CODE</string>
     <string-array name="variableTypes">
         <item>Bool</item>
         <item>Integer</item>

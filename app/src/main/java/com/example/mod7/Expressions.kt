@@ -40,7 +40,18 @@ class IntegerType(init : Any) : Variable{
     override fun set(to: Any) {
         value = when(to){
             is Int -> to
-            is String -> to.toInt()
+//            is String -> {
+//                (if(to[0] == '-') -1 else 1)*(if(to.indexOf(".")>=0)to.toDouble().toInt() else to.toInt())
+//
+//            }
+            is String -> {
+                if(to.indexOf(".")>=0){
+                    to.toDouble().toInt()
+                }
+                else {
+                    to.toInt()
+                }
+            }
             is Double -> kotlin.math.round(to).toInt()
             is IntegerType -> to.value
             else -> throw Exception("Variable type mismatch: $to can not be converted to Int")
@@ -52,6 +63,9 @@ class IntegerType(init : Any) : Variable{
     }
     operator fun minus(operand: IntegerType): IntegerType{
         return IntegerType(this.value - operand.value)
+    }
+    operator fun times(operand: IntegerType): IntegerType{
+        return IntegerType(this.value * operand.value)
     }
     operator fun div(operand: IntegerType): IntegerType{
         return IntegerType(this.value / operand.value)
@@ -78,7 +92,14 @@ class DoubleType(init : Any) : Variable{
     override fun set(to: Any) {
         value = when(to){
             is Int -> to.toDouble()
-            is String -> to.toDouble()
+            is String -> {
+//                if(to[0] == '-'){
+//                    0.0-to.substring(1).toDouble()
+//                }else {
+//                    to.toDouble()
+//                }
+                to.toDouble()
+            }
             is Double -> to
             is IntegerType -> to().toDouble()
             else -> throw Exception("Variable type mismatch: $to can not be converted to Int")
@@ -87,6 +108,9 @@ class DoubleType(init : Any) : Variable{
 
     operator fun plus(operand: DoubleType): DoubleType{
         return DoubleType(this.value + operand.value)
+    }
+    operator fun times(operand: DoubleType): DoubleType{
+        return DoubleType(this.value * operand.value)
     }
     operator fun minus(operand: DoubleType): DoubleType{
         return DoubleType(this.value - operand.value)

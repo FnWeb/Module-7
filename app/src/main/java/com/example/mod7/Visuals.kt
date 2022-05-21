@@ -79,7 +79,11 @@ class BlockViewManager(binding: ActivityMainBinding){
 
         val firstHeight = blocks[first].first.height
         val secondHeight = blocks[second].first.height
-
+        blocks[first].second.findViewById<TextView>(R.id.lineNumberTextView).apply {
+            var firstLine = text.toString()
+            text = blocks[second].second.findViewById<TextView>(R.id.lineNumberTextView).text.toString()
+            blocks[second].second.findViewById<TextView>(R.id.lineNumberTextView).text = firstLine
+        }
 
         if(kotlin.math.abs(first-second)==1){
             if(first<blocks.size-1){

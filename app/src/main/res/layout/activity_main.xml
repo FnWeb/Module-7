@@ -76,7 +76,7 @@
         android:insetBottom="0dp"
         android:lineSpacingExtra="-16sp"
         android:shape="rectangle"
-        android:text="RUN CODE"
+        android:text="@string/runButtonText"
         android:textAlignment="center"
         android:textSize="34sp"
         android:visibility="visible"
