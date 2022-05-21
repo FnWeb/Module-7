@@ -2,7 +2,6 @@ package com.example.mod7
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.EditText
 import android.widget.Spinner
@@ -318,7 +317,6 @@ class Program(binding: ActivityMainBinding) {
                 exceptionHandler.throwRuntime("RPN: Parenthesis Mismatch ${output.toString()} unresolved ( for $input")
             output.add(operators.pop().toString())
         }
-        Log.wtf("wtf", output.joinToString(" "))
         var operands: Stack<String> = Stack()
         var right: String = ""
         var left: String = ""

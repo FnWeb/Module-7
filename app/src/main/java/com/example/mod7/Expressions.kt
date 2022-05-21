@@ -152,7 +152,13 @@ class BoolType(init: Any) : Variable {
     override fun set(to: Any) {
         value = when (to) {
             is Int -> to > 0
-            is String -> to != "" && to != "0" && to != "false"
+            is String -> {
+                if(to == "true")
+                    true
+                else{
+                    if(to.indexOf(".")>=0) to.toDouble()>0 else to.toInt()>0
+                }
+            }
             is Double -> to > 0
             else -> throw Exception("Variable type mismatch: $to can not be used to initialize a Boolean")
         }

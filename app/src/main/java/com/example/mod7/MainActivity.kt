@@ -103,9 +103,9 @@ class MainActivity : AppCompatActivity() {
     fun onVariableNameTextViewClick(view: View) {
         view as TextView
         var name: String = view.text.toString()
-        name.replace(Regex("\\s*,\\s*"), "")
+        name = name.replace(Regex("\\s*,\\s*"), ",")
         if (!name.matches("^${variableNameRegex}(,$variableNameRegex)*$".toRegex())) {
-            Toast.makeText(this, "INVALID VARIABEL", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "INVALID VARIABEL $name", Toast.LENGTH_SHORT).show()
             view.text = ""
         }
         (view.context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
@@ -113,6 +113,7 @@ class MainActivity : AppCompatActivity() {
             0
         )//Единственный способ скрыть клавиатуру.......................
         view.clearFocus()
+        view.text = name
     }
 
     fun onExpressionFieldClick(view: View) {
