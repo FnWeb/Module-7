@@ -2,6 +2,7 @@ package com.example.mod7
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.EditText
 import android.widget.Spinner
@@ -288,6 +289,9 @@ class Program(binding: ActivityMainBinding) {
                     exceptionHandler.throwRuntime("Variable $token is uninitialized or does not exist")
                 }
             } else if (token.matches(operatorRegex)) {
+                if(token == "-" && index>1&&input[index-1]=='('){
+                    output.add("0")
+                }
                 while (operators.isNotEmpty() && precedence(operators.peek()) <= precedence(token[0]) /*||token is left-associative && equal precedence*/) {
                     output.add(operators.pop().toString())
                 }
@@ -314,7 +318,7 @@ class Program(binding: ActivityMainBinding) {
                 exceptionHandler.throwRuntime("RPN: Parenthesis Mismatch ${output.toString()} unresolved ( for $input")
             output.add(operators.pop().toString())
         }
-
+        Log.wtf("wtf", output.joinToString(" "))
         var operands: Stack<String> = Stack()
         var right: String = ""
         var left: String = ""
