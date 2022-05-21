@@ -79,14 +79,14 @@ class BlockViewManager(binding: ActivityMainBinding){
     }
 
     fun selectBlock(index: Int){
-        if(index<0 || index>=blocks.size){
-            return
-        }
         if(lastSelected>=0 && lastSelected<blocks.size){
             blocks[lastSelected].first.apply {
                 findViewById<TextView>(R.id.blockTitle).setTextColor(ContextCompat.getColor(context, R.color.orange))
                 findViewById<View>(R.id.bodyRectangleView).background = ResourcesCompat.getDrawable(resources, R.drawable.roundcorners, null)
             }
+        }
+        if(index<0 || index>=blocks.size){
+            return
         }
         blocks[index].first.apply {
             findViewById<TextView>(R.id.blockTitle).setTextColor(ContextCompat.getColor(context, R.color.white))

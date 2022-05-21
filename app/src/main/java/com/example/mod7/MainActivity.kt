@@ -15,7 +15,7 @@ import com.example.mod7.databinding.ActivityMainBinding
 const val BLOCK_TYPE_VAR = "CREATE_VARIABLE"
 const val BLOCK_TYPE_ASSIGN = "ASSIGN_VARIABLE"
 const val BLOCK_TYPE_PRINT = "PRINT_VARIABLE"
-const val programSpeed: Int = 10
+const val programSpeed: Int = 5
 const val variableNameRegex = "[a-zA-Z]+(\\d|[a-zA-Z])*"
 
 //const val expressionRegex = "(\\d+|$variableNameRegex)(\\s*[+-/*%]\\s*(\\d+|$variableNameRegex))*"

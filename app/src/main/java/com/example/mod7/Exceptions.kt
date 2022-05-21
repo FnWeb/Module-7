@@ -21,7 +21,7 @@ class ExceptionHandler(program: Program, binding: ActivityMainBinding) {
         val intent: Intent = Intent(context, Error::class.java)
         intent.putExtra(
             EXC_MSG,
-            "${if (showLine) program.getCurrentLine().toString() + ": " else ""}$msg"
+            "${if (showLine) (program.getCurrentLine()+1).toString() + ": " else ""}$msg"
         );
         context.startActivity(intent)
     }

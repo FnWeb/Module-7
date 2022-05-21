@@ -136,6 +136,7 @@ class Program(binding: ActivityMainBinding) {
         timer.purge()
         isRunning = false
         selectedBlock = -1
+        blockViewManager.selectBlock(selectedBlock)
     }
 
     fun startExecution() {
@@ -152,8 +153,8 @@ class Program(binding: ActivityMainBinding) {
         timer.schedule(
             timerTask {
                 if (iterationCounter < instructions.size) {
-                    runInstructionSet()
                     blockViewManager.selectBlock(iterationCounter)
+                    runInstructionSet()
                 } else {
                     stopExecution()
                     consoleOutput += "---------------------------------------\n"
@@ -161,7 +162,7 @@ class Program(binding: ActivityMainBinding) {
                 }
             },
             0,
-            (1000 / (kotlin.math.min(kotlin.math.max(programSpeed, 1), 10) * 100)).toLong()
+            (1000 / (kotlin.math.min(kotlin.math.max(programSpeed, 1), 10) )).toLong()
         )
     }
 
@@ -200,6 +201,10 @@ class Program(binding: ActivityMainBinding) {
                     blockViewManager.blocks[iterationCounter].first.findViewById<EditText>(R.id.variableNameTextView).text.toString()
                 val input =
                     blockViewManager.blocks[iterationCounter].first.findViewById<EditText>(R.id.expressionField).text.toString()
+                if (input.isEmpty()) {
+                    exceptionHandler.throwRuntime("Variable assignment faliure: expression empty")
+                    return
+                }
                 val value = parseRPN(
                     if (input.isNotEmpty() && input[0] == '-') {
                         "0$input"
@@ -225,9 +230,10 @@ class Program(binding: ActivityMainBinding) {
             }
             BLOCK_TYPE_PRINT -> {
                 blockViewManager.blocks[iterationCounter].first.apply {
+                    val input = findViewById<EditText>(R.id.expressionField).text.toString()
                     printToConsole(
                         "",
-                        parseRPN(findViewById<EditText>(R.id.expressionField).text.toString())
+                        if (input.isEmpty()) "" else parseRPN((if(input[0]=='-') "0" else "") + input)
                     )
                 }
             }
@@ -283,7 +289,7 @@ class Program(binding: ActivityMainBinding) {
                     token += input[++index]
                 }
                 output.add(
-                    if (token == "true" || token == "false") (token == "true").toString() else variables[token]?.invoke()
+                    if (token == "true" || token == "false") if (token == "true") "1" else "0" else variables[token]?.invoke()
                         .toString()
                 )
                 if (token != "true" && token != "false" && (!variables.containsKey(token) || !(variables[token]?.initialized
@@ -331,7 +337,6 @@ class Program(binding: ActivityMainBinding) {
                 if (token == "%" && (right.indexOf(".") >= 0 || left.indexOf(".") >= 0)) {
                     exceptionHandler.throwRuntime("Unable to calculate floating point number mod")
                 }
-                Log.wtf("wtf", "$left $token $right")
                 result = when (token) {
                     "+" -> {
                         if (right.indexOf(".") >= 0 || left.indexOf(".") >= 0) {
