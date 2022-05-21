@@ -1,28 +1,17 @@
 package com.example.mod7
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.app.Application
-import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.EditText
 import android.widget.Spinner
-import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import com.example.mod7.databinding.ActivityMainBinding
-import kotlinx.coroutines.currentCoroutineContext
-import kotlinx.coroutines.selects.select
-import java.lang.NullPointerException
 import java.util.*
 import kotlin.Exception
-import kotlin.coroutines.coroutineContext
 import kotlin.concurrent.timerTask
 
-const val typeNameBool = "Bool";
-const val typeNameInteger = "Int";
+const val typeNameBool = "Bool"
+const val typeNameInteger = "Int"
 const val typeNameDouble = "Double"
 
 class Program(binding: ActivityMainBinding) {
@@ -54,7 +43,7 @@ class Program(binding: ActivityMainBinding) {
         if (variables.containsKey(variable)) {
             exceptionHandler.throwRuntime("Attempting to create existing variable $variable")
         }
-        if (listOf<String>(typeNameInteger, typeNameBool, typeNameDouble).indexOf(type) < 0) {
+        if (listOf(typeNameInteger, typeNameBool, typeNameDouble).indexOf(type) < 0) {
             exceptionHandler.throwRuntime("Unable to create variable: unknown type $type")
         }
         variables[variable] = when (type) {
@@ -69,7 +58,7 @@ class Program(binding: ActivityMainBinding) {
         return variables[variable]!!
     }
 
-    public fun createVariable(variable: String, type: String) {
+    fun createVariable(variable: String, type: String) {
         if (variables.containsKey(variable) || variable.length <= 0) {
             throw Exception("Attempting to create existing variable [$variable]")
         }
@@ -107,7 +96,7 @@ class Program(binding: ActivityMainBinding) {
             )
             return
         }
-        blockViewManager.swapBlocks(selectedBlock, selectedBlock - 1);
+        blockViewManager.swapBlocks(selectedBlock, selectedBlock - 1)
         Collections.swap(instructions, selectedBlock, --selectedBlock)
     }
 
@@ -119,7 +108,7 @@ class Program(binding: ActivityMainBinding) {
             )
             return
         }
-        blockViewManager.swapBlocks(selectedBlock, selectedBlock + 1);
+        blockViewManager.swapBlocks(selectedBlock, selectedBlock + 1)
         Collections.swap(instructions, selectedBlock, ++selectedBlock)
     }
 
@@ -166,6 +155,7 @@ class Program(binding: ActivityMainBinding) {
         )
     }
 
+    @SuppressLint("CutPasteId")
     private fun runInstructionSet() {
         when (instructions[iterationCounter]) {
             BLOCK_TYPE_VAR -> {
@@ -268,8 +258,8 @@ class Program(binding: ActivityMainBinding) {
         val numberRegex = "-?[0-9]+(\\.[0-9]+)?".toRegex()
         val operatorRegex = "[%/*+-]".toRegex()
         var token: String
-        var output: Queue<String> = LinkedList<String>()// Kotlin moment
-        var operators: Stack<Char> = Stack()
+        val output: Queue<String> = LinkedList<String>()// Kotlin moment
+        val operators: Stack<Char> = Stack()
         while (index < input.length) {// Цикл невозможно реализовать через for a in b, так как a неизменяемое и в таком случае потребуется куда больше заморочек со считыванием числа через continue
             // Но штраф за неиспользование for in нам все равно впаяют))0)
             token = "" + input[index]
@@ -336,7 +326,13 @@ class Program(binding: ActivityMainBinding) {
                 left = operands.pop()
                 if (token == "%" && (right.indexOf(".") >= 0 || left.indexOf(".") >= 0)) {
                     exceptionHandler.throwRuntime("Unable to calculate floating point number mod")
+                    return ""
                 }
+                if ((token == "%" || token == "/" ) && (right.indexOf(".")>=0&& 0-right.toDouble()>=0 || right.toInt()==0)) {
+                    exceptionHandler.throwRuntime("Division by Zero")
+                    return ""
+                }
+
                 result = when (token) {
                     "+" -> {
                         if (right.indexOf(".") >= 0 || left.indexOf(".") >= 0) {
