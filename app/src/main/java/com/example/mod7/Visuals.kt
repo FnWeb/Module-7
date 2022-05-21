@@ -18,6 +18,8 @@ import android.widget.Spinner
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.content.withStyledAttributes
 import androidx.core.view.updateLayoutParams
 import com.example.mod7.databinding.ActivityMainBinding
@@ -28,6 +30,7 @@ class BlockViewManager(binding: ActivityMainBinding){
     var blocks = mutableListOf<Pair<View, View>>()
     private var totalySafeIdCount = 123456
     private var binding = binding
+    private var lastSelected = -1
     fun addBlock(context: Context, layoutInflater: LayoutInflater, parentBlock: Int, line: Int, type: String){//
 //        val layoutInflater = LayoutInflater.from(context)
 //        val binding = ActivityMainBinding.inflate(layoutInflater)
@@ -73,6 +76,23 @@ class BlockViewManager(binding: ActivityMainBinding){
 
         blocks.add(Pair<View, View>(block, blockLine))
 //        block.visibility = View.INVISIBLE
+    }
+
+    fun selectBlock(index: Int){
+        if(index<0 || index>=blocks.size){
+            return
+        }
+        if(lastSelected>=0 && lastSelected<blocks.size){
+            blocks[lastSelected].first.apply {
+                findViewById<TextView>(R.id.blockTitle).setTextColor(ContextCompat.getColor(context, R.color.orange))
+                findViewById<View>(R.id.bodyRectangleView).background = ResourcesCompat.getDrawable(resources, R.drawable.roundcorners, null)
+            }
+        }
+        blocks[index].first.apply {
+            findViewById<TextView>(R.id.blockTitle).setTextColor(ContextCompat.getColor(context, R.color.white))
+            findViewById<View>(R.id.bodyRectangleView).background = ResourcesCompat.getDrawable(resources, R.drawable.roundcorners_selected, null)
+        }
+        lastSelected = index
     }
 
     fun swapBlocks(first: Int, second: Int){
@@ -171,5 +191,6 @@ class BlockViewManager(binding: ActivityMainBinding){
     fun clearBlocks(){
         blocks.forEach { binding.blockConstraintLayout.removeView(it.first); binding.blockConstraintLayout.removeView(it.second) }
         blocks.clear()
+        lastSelected = -1
     }
 }

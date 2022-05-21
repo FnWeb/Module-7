@@ -5,9 +5,9 @@ import java.util.Stack
 import java.util.LinkedList
 
 
-interface Expr{
-    fun run(): Variable{
-        return when(this){
+interface Expr {
+    fun run(): Variable {
+        return when (this) {
             is Variable -> this
             is Command -> this.execute()
             else -> throw Exception("Undefined run behavior for $this")
@@ -15,21 +15,22 @@ interface Expr{
     }
 }
 
-interface Command : Expr{
+interface Command : Expr {
     open fun execute(): Variable
 }
 
-interface Variable : Expr{
+interface Variable : Expr {
     //    open fun retrieve(): Any
     open fun set(to: Any)
     open operator fun invoke(): Any //Retrieve atomic value
-    var initialized:Boolean
+    var initialized: Boolean
 }
 
-class IntegerType(init : Any) : Variable{
+class IntegerType(init: Any) : Variable {
     private var value: Int = 0;
     override var initialized = false
-    init{
+
+    init {
         set(init)
     }
 
@@ -38,17 +39,16 @@ class IntegerType(init : Any) : Variable{
 //    }
 
     override fun set(to: Any) {
-        value = when(to){
+        value = when (to) {
             is Int -> to
 //            is String -> {
 //                (if(to[0] == '-') -1 else 1)*(if(to.indexOf(".")>=0)to.toDouble().toInt() else to.toInt())
 //
 //            }
             is String -> {
-                if(to.indexOf(".")>=0){
+                if (to.indexOf(".") >= 0) {
                     to.toDouble().toInt()
-                }
-                else {
+                } else {
                     to.toInt()
                 }
             }
@@ -58,30 +58,36 @@ class IntegerType(init : Any) : Variable{
         }
     }
 
-    operator fun plus(operand: IntegerType): IntegerType{
+    operator fun plus(operand: IntegerType): IntegerType {
         return IntegerType(this.value + operand.value)
     }
-    operator fun minus(operand: IntegerType): IntegerType{
+
+    operator fun minus(operand: IntegerType): IntegerType {
         return IntegerType(this.value - operand.value)
     }
-    operator fun times(operand: IntegerType): IntegerType{
+
+    operator fun times(operand: IntegerType): IntegerType {
         return IntegerType(this.value * operand.value)
     }
-    operator fun div(operand: IntegerType): IntegerType{
+
+    operator fun div(operand: IntegerType): IntegerType {
         return IntegerType(this.value / operand.value)
     }
-    operator fun rem(operand: IntegerType): IntegerType{
+
+    operator fun rem(operand: IntegerType): IntegerType {
         return IntegerType(this.value % operand.value)
     }
-    override operator fun invoke(): Int{
+
+    override operator fun invoke(): Int {
         return value
     }
 }
 
-class DoubleType(init : Any) : Variable{
+class DoubleType(init: Any) : Variable {
     private var value: Double = 0.0;
     override var initialized = false
-    init{
+
+    init {
         set(init)
     }
 
@@ -90,7 +96,7 @@ class DoubleType(init : Any) : Variable{
 //    }
 
     override fun set(to: Any) {
-        value = when(to){
+        value = when (to) {
             is Int -> to.toDouble()
             is String -> {
 //                if(to[0] == '-'){
@@ -106,30 +112,36 @@ class DoubleType(init : Any) : Variable{
         }
     }
 
-    operator fun plus(operand: DoubleType): DoubleType{
+    operator fun plus(operand: DoubleType): DoubleType {
         return DoubleType(this.value + operand.value)
     }
-    operator fun times(operand: DoubleType): DoubleType{
+
+    operator fun times(operand: DoubleType): DoubleType {
         return DoubleType(this.value * operand.value)
     }
-    operator fun minus(operand: DoubleType): DoubleType{
+
+    operator fun minus(operand: DoubleType): DoubleType {
         return DoubleType(this.value - operand.value)
     }
-    operator fun div(operand: DoubleType): DoubleType{
+
+    operator fun div(operand: DoubleType): DoubleType {
         return DoubleType(this.value / operand.value)
     }
-    operator fun rem(operand: DoubleType): DoubleType{
+
+    operator fun rem(operand: DoubleType): DoubleType {
         return DoubleType(this.value % operand.value)
     }
-    override operator fun invoke(): Double{
+
+    override operator fun invoke(): Double {
         return value
     }
 }
 
-class BoolType(init : Any) : Variable{
+class BoolType(init: Any) : Variable {
     private var value: Boolean = false;
     override var initialized = false
-    init{
+
+    init {
         set(init)
     }
 
@@ -138,52 +150,54 @@ class BoolType(init : Any) : Variable{
 //    }
 
     override fun set(to: Any) {
-        value = when(to){
-            is Int -> to>0
-            is String -> to!="" && to!="0" && to!="false"
-            is Double -> to>0
+        value = when (to) {
+            is Int -> to > 0
+            is String -> to != "" && to != "0" && to != "false"
+            is Double -> to > 0
             else -> throw Exception("Variable type mismatch: $to can not be used to initialize a Boolean")
         }
     }
 
-    operator fun plus(operand: BoolType): BoolType{
+    operator fun plus(operand: BoolType): BoolType {
         return BoolType(this.value || operand.value)
     }
-    operator fun rem(operand: BoolType): BoolType{
+
+    operator fun rem(operand: BoolType): BoolType {
         return BoolType(this.value && !operand.value)
     }
-    override operator fun invoke(): Boolean{
+
+    override operator fun invoke(): Boolean {
         return value
     }
 }
 
-fun castType(from: Expr, to: Expr): Variable{
-    if(from is Command || to is Command)
+fun castType(from: Expr, to: Expr): Variable {
+    if (from is Command || to is Command)
         throw Exception("Unable to typecast expressions")
-    return when(to){
-        is IntegerType -> when(from) {
+    return when (to) {
+        is IntegerType -> when (from) {
             is IntegerType -> from
             is BoolType -> IntegerType(from())
             is DoubleType -> IntegerType(from().toInt())
             else -> throw IllegalArgumentException("Unable to typecast $from to $to")
         }
-        is DoubleType -> when(from) {
+        is DoubleType -> when (from) {
             is IntegerType -> DoubleType(from())
             is BoolType -> DoubleType(from())
             is DoubleType -> from
             else -> throw IllegalArgumentException("Unable to typecast $from to $to")
         }
-        is BoolType -> when (from){
-            is IntegerType -> BoolType(from()!=0)
+        is BoolType -> when (from) {
+            is IntegerType -> BoolType(from() != 0)
             is BoolType -> from
-            is DoubleType -> BoolType(from()!=0.0)
+            is DoubleType -> BoolType(from() != 0.0)
             else -> throw IllegalArgumentException("Unable to typecast $from to $to")
         }
         else -> throw Exception("Unable to typecast $from to $to")
     }
 }
 
-class Add(left: Expr, right: Expr): Command{
+class Add(left: Expr, right: Expr) : Command {
     private var result: Variable? = null
 
     var left: Expr = left
@@ -192,17 +206,17 @@ class Add(left: Expr, right: Expr): Command{
     override fun execute(): Variable {
         var operandL: Variable = left.run()
         var operandR: Variable = right.run()
-        operandL = if(operandL is BoolType && operandR is BoolType)
+        operandL = if (operandL is BoolType && operandR is BoolType)
             IntegerType(operandR()) else castType(operandL, operandR)
 
         operandR = castType(operandR, operandL)
 
-        if(operandL is IntegerType &&  operandR is IntegerType)
+        if (operandL is IntegerType && operandR is IntegerType)
             result = operandL + operandR
-        if(operandL is DoubleType &&  operandR is DoubleType)
+        if (operandL is DoubleType && operandR is DoubleType)
             result = operandL + operandR
 
-        if(result == null)
+        if (result == null)
             throw Exception("Addition error: $operandL + $operandR is null")
         return result!!
         TODO("Type cast and type-dependent operators")

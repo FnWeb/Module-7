@@ -134,34 +134,13 @@ class MainActivity : AppCompatActivity() {
         }
         val id = view.id
         if (selectedBlock >= 0) {
-            program.blockViewManager.blocks[selectedBlock].first.apply {
-                findViewById<TextView>(R.id.blockTitle).setTextColor(
-                    ContextCompat.getColor(
-                        context,
-                        R.color.orange
-                    )
-                )
-                findViewById<View>(R.id.bodyRectangleView).background =
-                    ResourcesCompat.getDrawable(resources, R.drawable.roundcorners, null)
-            }
+            program.blockViewManager.selectBlock(selectedBlock)
         }
-        val selectionColor = ContextCompat.getColor(this, R.color.white)
-
-        program.blockViewManager.blocks.apply {
-            val index = indexOf(find { it.first.id == id })
-
-            if (index >= 0) {
+        program.blockViewManager.apply {
+            val index = blocks.indexOf(blocks.find { it.first.id == id })
+            if(index>=0){
+                selectBlock(index)
                 selectedBlock = index
-                this[index].first.apply {
-                    findViewById<TextView>(R.id.blockTitle).setTextColor(selectionColor)
-                    findViewById<View>(R.id.bodyRectangleView).background =
-                        ResourcesCompat.getDrawable(
-                            resources,
-                            R.drawable.roundcorners_selected,
-                            null
-                        )
-                }
-
             } else {
                 selectedBlock = -1
                 program.exceptionHandler.throwCritical("Error retrieving selected block ID")

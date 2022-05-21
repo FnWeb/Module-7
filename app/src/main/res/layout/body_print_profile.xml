@@ -5,16 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/roundcorners"
+    android:onClick="onBlockClicked"
     android:paddingTop="2dp"
-    android:visibility="visible"
-    android:onClick="onBlockClicked">
+    android:visibility="visible">
 
     <View
         android:id="@+id/bodyRectangleView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/roundcorners"
         android:layout_marginTop="2dp"
+        android:background="@drawable/roundcorners"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
